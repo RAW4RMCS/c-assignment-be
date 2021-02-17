@@ -28,6 +28,15 @@ namespace AccountApi
 
             services.AddControllers();
 
+            // For local tesing
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            }));
+
             services.AddDbContext<AccountContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DB")));
 
@@ -46,10 +55,10 @@ namespace AccountApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors("CorsPolicy");
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AccountApi v1"));
             }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
