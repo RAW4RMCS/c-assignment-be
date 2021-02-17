@@ -9,8 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace AccountApi.Controllers
 {
     [Route("api/[controller]")]
@@ -34,9 +32,7 @@ namespace AccountApi.Controllers
             var accounts = _context.Accounts.ToList();
 
             if (accounts.Count == 0)
-            {
                 return NotFound("No accounts found");
-            }
 
             var accountDtos = accounts.Select(a => a.ToDto());
 
@@ -55,9 +51,7 @@ namespace AccountApi.Controllers
             var account = _context.Accounts.FirstOrDefault(a => a.Id == id);
 
             if (account == null)
-            {
                 return NotFound("No account found");
-            }
 
             return Ok(account);
         }
@@ -134,9 +128,7 @@ namespace AccountApi.Controllers
             var account = _context.Accounts.Find(id);
 
             if (account == null)
-            {
                 return NotFound("No account find with this id");
-            }
 
             // The method below could also be achieved by ignoring NULL values in the DTO
             if (editAccount.Name != null)
@@ -163,9 +155,7 @@ namespace AccountApi.Controllers
             var account = _context.Accounts.Find(id);
 
             if (account == null)
-            {
                 return NotFound("No account find with this id");
-            }
 
             account.Name = name;
 
@@ -182,9 +172,7 @@ namespace AccountApi.Controllers
             var account = _context.Accounts.Find(id);
 
             if (account == null)
-            {
                 return NotFound("No account find with this id");
-            }
 
             _context.Remove(account);
             _context.SaveChanges();
