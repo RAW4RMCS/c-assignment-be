@@ -2,6 +2,7 @@
 using AccountApi.Entities;
 using AccountApi.Logics;
 using AccountApi.ThirdPartyApis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -43,7 +44,9 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Get account by Id
         /// </summary>
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccountDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}", Name = "GetAccountById")]
         public ActionResult<AccountDto> GetAccountById(Guid id)
@@ -59,8 +62,10 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Add new account
         /// </summary>
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AccountDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPost(Name = "AddAccount")]
         public ActionResult<AccountDto> AddAccount(AddAccountDto addAccount)
         {
@@ -97,8 +102,10 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Add a random fact to account
         /// </summary>
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RandomFact))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPut("{id}/UpdateRandomFact", Name = "UpdateRandomFact")]
         public async Task<ActionResult<RandomFact>> UpdateRandomFact(Guid id)
         {
@@ -120,7 +127,9 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Update Account
         /// </summary>
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccountDto))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}", Name = "UpdateAccount")]
         public ActionResult<string> UpdateAccount(Guid id, EditAccountDto editAccount)
@@ -147,7 +156,9 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Only update account name
         /// </summary>
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}/UpdateAccountName", Name = "UpdateAccountName")]
         public ActionResult<string> UpdateAccountName(Guid id, string name)
@@ -160,13 +171,15 @@ namespace AccountApi.Controllers
             account.Name = name;
 
             _context.SaveChanges();
-            return Ok($"Account with id: '{account.Id}' is edited");
+            return Ok();
         }
 
         /// <summary>
         ///  Delete account
         /// </summary>
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}", Name = "DeleteAccount")]
         public ActionResult<string> Delete(Guid id)

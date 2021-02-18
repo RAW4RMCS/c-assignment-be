@@ -13,7 +13,7 @@ namespace AccountApi.Logics
                 Name = accountEntity.Name,
                 Iban = accountEntity.Iban,
                 FavoriteQuote = accountEntity.FavoriteQuote,
-                ImageUrl = accountEntity.Image.ImageUrl,
+                ImageUrl = accountEntity.Image?.ImageUrl,
                 RandomFact = accountEntity.RandomFact
             };
         }

@@ -32,8 +32,7 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Login
         /// </summary>
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AccountDto>))]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JwtResponseDto))]
         [HttpPost("login", Name = "login")]
         public async Task<IActionResult> Login(LoginDto login)
         {
@@ -68,7 +67,7 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Register a new user
         /// </summary>
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JwtResponseDto))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost("register", Name = "Register")]
         public async Task<IActionResult> Register(RegisterDto register)
