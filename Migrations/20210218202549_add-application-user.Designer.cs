@@ -4,14 +4,16 @@ using AccountApi.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AccountApi.Migrations
 {
     [DbContext(typeof(AccountApiContext))]
-    partial class AccountContextModelSnapshot : ModelSnapshot
+    [Migration("20210218202549_add-application-user")]
+    partial class addapplicationuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

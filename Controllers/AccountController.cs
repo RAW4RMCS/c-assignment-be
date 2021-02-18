@@ -1,6 +1,6 @@
-﻿using AccountApi.Context;
-using AccountApi.Dtos;
+﻿using AccountApi.Dtos;
 using AccountApi.Entities;
+using AccountApi.Logics;
 using AccountApi.ThirdPartyApis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,9 +15,9 @@ namespace AccountApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly AccountContext _context;
+        private readonly Context.AccountApiContext _context;
 
-        public AccountController(AccountContext accountContext)
+        public AccountController(Context.AccountApiContext accountContext)
         {
             _context = accountContext;
         }
@@ -34,7 +34,7 @@ namespace AccountApi.Controllers
             if (accounts.Count == 0)
                 return NotFound("No accounts found");
 
-            var accountDtos = accounts.Select(a => a.ToDto());
+            var accountDtos = accounts.Select(a => AccountsLogic.MapAccountEntityToAccountDto(a));
 
             return Ok(accountDtos);
 
