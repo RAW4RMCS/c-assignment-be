@@ -25,7 +25,7 @@ namespace AccountApi.Controllers
         ///  Get list of all available accounts
         /// </summary>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AccountDto>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet(Name = "GetAccounts")]
         public ActionResult<List<AccountDto>> GetAccounts()
         {
@@ -44,7 +44,7 @@ namespace AccountApi.Controllers
         ///  Get account by Id
         /// </summary>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccountDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}", Name = "GetAccountById")]
         public ActionResult<AccountDto> GetAccountById(Guid id)
         {
@@ -59,10 +59,10 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Add new account
         /// </summary>
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(string))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(AccountDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost(Name = "AddAccount")]
-        public ActionResult<string> AddAccount(AddAccountDto addAccount)
+        public ActionResult<AccountDto> AddAccount(AddAccountDto addAccount)
         {
             var accounts = _context.Accounts;
 
@@ -91,16 +91,16 @@ namespace AccountApi.Controllers
             _context.Accounts.Add(newAccount);
             _context.SaveChanges();
 
-            return StatusCode(201, "Account successfully created");
+            return CreatedAtAction(nameof(GetAccountById), new { id = addAccount.Id }, addAccount);
         }
 
         /// <summary>
         ///  Add a random fact to account
         /// </summary>
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
-        [HttpPut("{id}/AddRandomFactToAccount", Name = "AddRandomFactToAccount")]
-        public async Task<ActionResult<string>> AddRandomFactToAccount(Guid id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(RandomFact))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut("{id}/UpdateRandomFact", Name = "UpdateRandomFact")]
+        public async Task<ActionResult<RandomFact>> UpdateRandomFact(Guid id)
         {
             var account = _context.Accounts.Find(id);
 
@@ -114,14 +114,14 @@ namespace AccountApi.Controllers
             account.RandomFact = fact.Text;
 
             _context.SaveChanges();
-            return Ok($"Fact '{account.RandomFact}' is added to account with id: '{account.Id}'");
+            return Ok(fact);
         }
 
         /// <summary>
         ///  Update Account
         /// </summary>
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AccountDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}", Name = "UpdateAccount")]
         public ActionResult<string> UpdateAccount(Guid id, EditAccountDto editAccount)
         {
@@ -141,14 +141,14 @@ namespace AccountApi.Controllers
                 account.FavoriteQuote = editAccount?.FavoriteQuote;
 
             _context.SaveChanges();
-            return Ok($"Account with id: '{account.Id}' is edited");
+            return Ok(account);
         }
 
         /// <summary>
         ///  Only update account name
         /// </summary>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}/UpdateAccountName", Name = "UpdateAccountName")]
         public ActionResult<string> UpdateAccountName(Guid id, string name)
         {
@@ -166,6 +166,8 @@ namespace AccountApi.Controllers
         /// <summary>
         ///  Delete account
         /// </summary>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpDelete("{id}", Name = "DeleteAccount")]
         public ActionResult<string> Delete(Guid id)
         {
@@ -176,7 +178,7 @@ namespace AccountApi.Controllers
 
             _context.Remove(account);
             _context.SaveChanges();
-            return Ok($"Account with id: {id} deleted");
+            return Ok();
         }
     }
 }
