@@ -26,14 +26,13 @@ namespace AccountApi.Controllers
         ///  Get list of all available accounts
         /// </summary>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<AccountDto>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet(Name = "GetAccounts")]
         public ActionResult<List<AccountDto>> GetAccounts()
         {
             var accounts = _context.Accounts.ToList();
 
             if (accounts.Count == 0)
-                return NotFound("No accounts found");
+                return new List<AccountDto>();
 
             var accountDtos = accounts.Select(a => AccountsLogic.MapAccountEntityToAccountDto(a));
 
