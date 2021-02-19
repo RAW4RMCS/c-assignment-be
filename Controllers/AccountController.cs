@@ -118,7 +118,7 @@ namespace AccountApi.Controllers
                 if(fact == null)
                 return BadRequest("New fact: Something went wrong (This is a error message)");
             
-            account.RandomFact = fact.Text;
+            account.RandomFact = fact.Data;
 
             _context.SaveChanges();
             return Ok(fact);

@@ -6,17 +6,12 @@ namespace AccountApi.ThirdPartyApis
 {
     public class RandomFact
     {
-            public string Guid { get; set; }
-            public string Text { get; set; }
-            public string Source { get; set; }
-            public string Source_url { get; set; }
-            public string Language { get; set; }
-            public string Permalink { get; set; }
+            public string Data { get; set; }
 
-        
         public static async Task<RandomFact> GetFact()
         {
-            var uri = "https://uselessfacts.jsph.pl/random.json?language=en";
+            var uri = "https://useless-facts.sameerkumar.website/api";
+            // var uri = "https://uselessfacts.jsph.pl/random.json?language=en"; SSL certificate expired
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Add("Accept", "application/json");
 
